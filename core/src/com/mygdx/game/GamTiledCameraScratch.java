@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 
 //Sources: Orthographic Camera Properties: http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx
+          //Translating Orthographic Camera: https://github.com/libgdx/libgdx/wiki/Orthographic-camera
 
 public class GamTiledCameraScratch extends ApplicationAdapter {
 	//SpriteBatch batch;
@@ -21,8 +22,8 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	private static final int nCols = 4;
 	private static final int nRows = 4;
 
-	//int nWidth = (Gdx.graphics.getWidth());
-	//int nHeight = Gdx.graphics.getHeight();
+	int nWidth;
+	int nHeight;
 
 	SpriteBatch sbBatch;
 	Texture txSprite;
@@ -31,7 +32,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	TextureRegion trCurrentFrame;
 	float fSpriteX = 0;
 	float fSpriteY = 0;
-	float fSpriteSpeed = 45f;
+	float fSpriteSpeed = 100f;
 	float fTime = 0f;
 	Animation aniMain;
 
@@ -65,9 +66,14 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		ocMainCam.update();
 
 		//Setting Up TiledMap
-		tmGameMap= new TmxMapLoader().load("IntoTheWoodsRPGMap.tmx");
+		tmGameMap= new TmxMapLoader().load("CameraPanMap.tmx");
 		orthotmrRenderer = new OrthogonalTiledMapRenderer(tmGameMap);
 		//Gdx.input.setInputProcessor(this);
+
+		System.out.println("Screen Height:" + Gdx.graphics.getHeight());
+		nHeight = Gdx.graphics.getHeight();
+		nWidth = Gdx.graphics.getWidth();
+		//System.out.prniln("Scr")
 	}
 
 	@Override
@@ -98,6 +104,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
 			fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
+			System.out.println("Player Sprite Y:" + fSpriteY);
 			trCurrentFrame = aniMain.getKeyFrame(12 + fTime);
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
@@ -120,5 +127,25 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		//batch.draw(BackGround, 0, 0);
 		sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
 		sbBatch.end();
+
+		if(fSpriteY >= nHeight){
+			ocMainCam.translate(0, nHeight, 0);
+			//nHeight += Gdx.graphics.getHeight();
+			fSpriteY = 0;
+		}
+		else if(fSpriteY < 0){
+			ocMainCam.translate(0, 0-nHeight, 0);
+			fSpriteY = nHeight;
+		}
+		else if(fSpriteX >= nWidth){
+			ocMainCam.translate(nWidth, 0, 0);
+			//nHeight += Gdx.graphics.getHeight();
+			fSpriteX = 0;
+		}
+		else if(fSpriteX < 0){
+			ocMainCam.translate(0-nWidth, 0, 0);
+			//nHeight += Gdx.graphics.getHeight();
+			fSpriteX = nWidth;
+		}
 	}
 }
