@@ -9,9 +9,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+
+import java.util.ArrayList;
 
 //Sources: Orthographic Camera Properties: http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx
           //Translating Orthographic Camera: https://github.com/libgdx/libgdx/wiki/Orthographic-camera
@@ -36,15 +41,26 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	float fTime = 0f;
 	Animation aniMain;
 
+	boolean bBoundsCheck = false;
+
 	//TiledMap GameMap= new TmxMapLoader().load("IntoTheWoodsRPGMap.tmx");
 	TiledMap tmGameMap;
 	OrthogonalTiledMapRenderer orthotmrRenderer;
 	OrthographicCamera ocMainCam;
+
+	ArrayList<Rectangle> arlRectObjectBounds = new ArrayList<Rectangle>();
+	Rectangle rectSprite;
+	String sDirection;
+
+	RectangleMapObject rmoCollisionRect;
+	MapObjects moCollisionDetection;
+	Rectangle rectObjectBounds;
 	
 	@Override
 	public void create () {
 		//batch = new SpriteBatch();
 		//img = new Texture("badlogic.jpg");
+		rectSprite = new Rectangle();
 		sbBatch = new SpriteBatch();
 		//BackGround = new Texture(Gdx.files.internal("lostwoods2.jpg"));
 		txSprite = new Texture(Gdx.files.internal("CinderellaSpriteSheet.png"));
@@ -73,6 +89,16 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		System.out.println("Screen Height:" + Gdx.graphics.getHeight());
 		nHeight = Gdx.graphics.getHeight();
 		nWidth = Gdx.graphics.getWidth();
+
+		//Creating Bounds for Collision Detection
+		moCollisionDetection = tmGameMap.getLayers().get("Map Bounds").getObjects();
+		for (int i = 0; i < moCollisionDetection.getCount(); i++) {
+			rmoCollisionRect = (RectangleMapObject) moCollisionDetection.get(i);
+			rectObjectBounds = rmoCollisionRect.getRectangle();
+
+			arlRectObjectBounds.add(rectObjectBounds);
+			System.out.println("Rectangle Added!");
+		}
 		//System.out.prniln("Scr")
 	}
 
@@ -97,19 +123,23 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
 			fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(4 + fTime);
+			sDirection = "Left";
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
 			fSpriteX += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(8 + fTime);
+			sDirection = "Right";
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
 			fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			System.out.println("Player Sprite Y:" + fSpriteY);
 			trCurrentFrame = aniMain.getKeyFrame(12 + fTime);
+			sDirection = "Up";
 		}
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
 			fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(0 + fTime);
+			sDirection = "Down";
 		}
 
 		//Rendering Tiled Map
@@ -128,24 +158,60 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
 		sbBatch.end();
 
-		if(fSpriteY >= nHeight){
-			ocMainCam.translate(0, nHeight, 0);
-			//nHeight += Gdx.graphics.getHeight();
-			fSpriteY = 0;
+		/*for(int i = 0; i < arlRectObjectBounds.size(); i++){
+			while(rectSprite.)
+		}*/
+
+		//if(bBoundsCheck == false) {
+
+			if (fSpriteY >= nHeight) {
+				ocMainCam.translate(0, nHeight, 0);
+				//nHeight += Gdx.graphics.getHeight();
+				fSpriteY = 0;
+			} else if (fSpriteY < 0) {
+				ocMainCam.translate(0, 0 - nHeight, 0);
+				fSpriteY = nHeight;
+			} else if (fSpriteX >= nWidth) {
+				ocMainCam.translate(nWidth, 0, 0);
+				//nHeight += Gdx.graphics.getHeight();
+				fSpriteX = 0;
+			} else if (fSpriteX < 0) {
+				ocMainCam.translate(0 - nWidth, 0, 0);
+				//nHeight += Gdx.graphics.getHeight();
+				fSpriteX = nWidth;
+			//}
 		}
-		else if(fSpriteY < 0){
-			ocMainCam.translate(0, 0-nHeight, 0);
-			fSpriteY = nHeight;
-		}
-		else if(fSpriteX >= nWidth){
-			ocMainCam.translate(nWidth, 0, 0);
-			//nHeight += Gdx.graphics.getHeight();
-			fSpriteX = 0;
-		}
-		else if(fSpriteX < 0){
-			ocMainCam.translate(0-nWidth, 0, 0);
-			//nHeight += Gdx.graphics.getHeight();
-			fSpriteX = nWidth;
-		}
+		rectSprite.set(fSpriteX, fSpriteY, trCurrentFrame.getRegionWidth(), trCurrentFrame.getRegionHeight());
+
+		/*for (int i = 0; i < arlRectObjectBounds.size(); i++) {
+			bBoundsCheck = true;
+			if(rectSprite.overlaps(arlRectObjectBounds.get(i))) {
+				System.out.println("Collision Detected");
+				if(sDirection == "Up"){
+					fSpriteY -= 5f;
+					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
+					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
+				}
+				else if(sDirection == "Down"){
+					fSpriteY += 5f;
+					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
+					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
+				}
+				else if(sDirection == "Right") {
+					fSpriteX -= 5f;
+					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
+					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
+				}
+				else if(sDirection == "Left"){
+					fSpriteX += 5f;
+					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
+					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
+					//System.out.println("Play Rectangle: " + rectSprite);
+				}
+
+			}
+
+		}*/
+		//bBoundsCheck = false;
 	}
 }
