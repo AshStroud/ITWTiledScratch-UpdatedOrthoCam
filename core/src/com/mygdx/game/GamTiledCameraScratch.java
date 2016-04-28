@@ -35,8 +35,8 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	//Texture BackGround;
 	TextureRegion[] artrFrames;
 	TextureRegion trCurrentFrame;
-	float fSpriteX = 0;
-	float fSpriteY = 0;
+	float fSpriteX = 50;
+	float fSpriteY = 50;
 	float fSpriteSpeed = 100f;
 	float fTime = 0f;
 	Animation aniMain;
@@ -104,11 +104,6 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		//Gdx.gl.glClearColor(1, 0, 0, 1);
-		//Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		//batch.begin();
-		//batch.draw(img, 0, 0);
-		//batch.end();
 		//Rendering Sprite
 		if (fTime < 4) {
 			fTime += Gdx.graphics.getDeltaTime();
@@ -119,38 +114,54 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		trCurrentFrame = aniMain.getKeyFrame(0);
+		rectSprite.set(fSpriteX, fSpriteY, trCurrentFrame.getRegionWidth(), trCurrentFrame.getRegionHeight());
+		bBoundsCheck=isbBoundsCheck();
+		System.out.println(bBoundsCheck);
+		if(bBoundsCheck==false) {
+			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
+				fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
+				trCurrentFrame = aniMain.getKeyFrame(4 + fTime);
+				sDirection = "Left";
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
+				fSpriteX += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
+				trCurrentFrame = aniMain.getKeyFrame(8 + fTime);
+				sDirection = "Right";
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
+				fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
+				System.out.println("Player Sprite Y:" + fSpriteY);
+				trCurrentFrame = aniMain.getKeyFrame(12 + fTime);
+				sDirection = "Up";
+			}
+			if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
+				fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
+				trCurrentFrame = aniMain.getKeyFrame(0 + fTime);
+				sDirection = "Down";
+			}
+		}
+		else{
+//			if(sDirection=="Right") {
+				fSpriteX += 1;
+//			}
+//			if(sDirection=="Left") {
+//				fSpriteX -= 1;
+//			}
+//			if(sDirection=="Up") {
+//				fSpriteY -= 1;
+//			}
+//			if(sDirection=="Down") {
+//				fSpriteY += 1;
+//			}
+		}
 
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
-			fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
-			trCurrentFrame = aniMain.getKeyFrame(4 + fTime);
-			sDirection = "Left";
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_RIGHT)) {
-			fSpriteX += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
-			trCurrentFrame = aniMain.getKeyFrame(8 + fTime);
-			sDirection = "Right";
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_UP)) {
-			fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
-			System.out.println("Player Sprite Y:" + fSpriteY);
-			trCurrentFrame = aniMain.getKeyFrame(12 + fTime);
-			sDirection = "Up";
-		}
-		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_DOWN)) {
-			fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
-			trCurrentFrame = aniMain.getKeyFrame(0 + fTime);
-			sDirection = "Down";
-		}
+
 
 		//Rendering Tiled Map
 		ocMainCam.update();
 		orthotmrRenderer.setView(ocMainCam);
 		orthotmrRenderer.render();
 
-		//OrthoGraphic Camera
-		//ocMainCam.position.set(fSpriteX, fSpriteY, 0);
-		//sbBatch.setProjectionMatrix(ocMainCam.combined);
-		//ocMainCam.update();
 
 		//Draw Sprites
 		sbBatch.begin();
@@ -158,60 +169,31 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
 		sbBatch.end();
 
-		/*for(int i = 0; i < arlRectObjectBounds.size(); i++){
-			while(rectSprite.)
-		}*/
-
-		//if(bBoundsCheck == false) {
-
 			if (fSpriteY >= nHeight) {
 				ocMainCam.translate(0, nHeight, 0);
-				//nHeight += Gdx.graphics.getHeight();
 				fSpriteY = 0;
 			} else if (fSpriteY < 0) {
 				ocMainCam.translate(0, 0 - nHeight, 0);
 				fSpriteY = nHeight;
 			} else if (fSpriteX >= nWidth) {
 				ocMainCam.translate(nWidth, 0, 0);
-				//nHeight += Gdx.graphics.getHeight();
 				fSpriteX = 0;
 			} else if (fSpriteX < 0) {
 				ocMainCam.translate(0 - nWidth, 0, 0);
-				//nHeight += Gdx.graphics.getHeight();
-				fSpriteX = nWidth;
-			//}
-		}
-		rectSprite.set(fSpriteX, fSpriteY, trCurrentFrame.getRegionWidth(), trCurrentFrame.getRegionHeight());
 
-		/*for (int i = 0; i < arlRectObjectBounds.size(); i++) {
-			bBoundsCheck = true;
+				fSpriteX = nWidth;
+		}
+
+	}
+	public boolean isbBoundsCheck(){
+		for (int i = 0; i < arlRectObjectBounds.size(); i++) {
 			if(rectSprite.overlaps(arlRectObjectBounds.get(i))) {
 				System.out.println("Collision Detected");
-				if(sDirection == "Up"){
-					fSpriteY -= 5f;
-					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
-					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
-				}
-				else if(sDirection == "Down"){
-					fSpriteY += 5f;
-					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
-					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
-				}
-				else if(sDirection == "Right") {
-					fSpriteX -= 5f;
-					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
-					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
-				}
-				else if(sDirection == "Left"){
-					fSpriteX += 5f;
-					//System.out.println("Rectangle Location:" + arlRectCollisionDetection.get(i));
-					//System.out.println("Player Location:" + "X:" + fSpriteX + "Y: " + fSpriteY);
-					//System.out.println("Play Rectangle: " + rectSprite);
-				}
-
+				bBoundsCheck=true;
+				return bBoundsCheck;
 			}
-
-		}*/
-		//bBoundsCheck = false;
+		}
+		bBoundsCheck=false;
+		return bBoundsCheck;
 	}
 }
