@@ -23,18 +23,15 @@ import java.util.ArrayList;
 
 //Sources: Orthographic Camera Properties: http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx
           //Translating Orthographic Camera: https://github.com/libgdx/libgdx/wiki/Orthographic-camera
+          //Getting TileMa
 
 public class GamTiledCameraScratch extends ApplicationAdapter {
 	private static final int nCols = 4;
 	private static final int nRows = 4;
 
-	int nHeight;
-	int nWidth;
-
 	int nMapWidth, nMapHeight, nTileWidth, nTileHeight, nMapTileWidth, nMapTileHeight;
 	SpriteBatch sbBatch;
 	Texture txSprite;
-	//Texture BackGround;
 	TextureRegion[] artrFrames;
 	TextureRegion trCurrentFrame;
 	float fSpriteX = 0;
@@ -90,13 +87,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		nMapTileWidth = nMapWidth * nTileWidth;
 		nMapTileHeight = nMapHeight * nTileHeight;
 
-		System.out.println("Screen Height:" + Gdx.graphics.getHeight());
-		nHeight = Gdx.graphics.getHeight();
-		nWidth = Gdx.graphics.getWidth();
-
-		tmtlBounds = (TiledMapTileLayer) tmGameMap.getLayers().get("Foreground");
-		//nTileLayerHeight = tmtlBounds.getHeight();
-		//nTileLayerWidth = tmtlBounds.getWidth();
+		/*tmtlBounds = (TiledMapTileLayer) tmGameMap.getLayers().get("Foreground");
 		for (int i = 0; i < tmtlBounds.getWidth(); i++) {
 			for (int j = 0; j < tmtlBounds.getHeight(); j++) {
 				if (tmtlBounds.getCell(i, j) != null) {
@@ -109,7 +100,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 					}
 				}
 			}
-		}
+		}*/
 	}
 
 	@Override
@@ -125,9 +116,6 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		trCurrentFrame = aniMain.getKeyFrame(0);
 		rectSprite.set(fSpriteX, fSpriteY, trCurrentFrame.getRegionWidth(), trCurrentFrame.getRegionHeight());
-		//bBoundsCheck = isbBoundsCheck();
-		//System.out.println(bBoundsCheck);
-		//if (bBoundsCheck == false) {
 		if (Gdx.input.isKeyPressed(Input.Keys.DPAD_LEFT)) {
 			fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 			trCurrentFrame = aniMain.getKeyFrame(4 + fTime);
@@ -170,44 +158,6 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
 		sbBatch.end();
 
-
-		/*if (fSpriteY > nHeight) {
-			RemoveBoundsOnScreen();
-			ocMainCam.translate(0, nHeight, 0);
-			fSpriteY = 0;
-		} else if (fSpriteY < 0) {
-			RemoveBoundsOnScreen();
-			ocMainCam.translate(0, 0 - nHeight, 0);
-			fSpriteY = nHeight;
-			//FindBoundsOnScreen();
-		} else if (fSpriteX > nWidth) {
-			//RemoveBoundsOnScreen();
-			ocMainCam.translate(nWidth, 0, 0);
-			fSpriteX = 0;
-			//FindBoundsOnScreen();
-		} else if (fSpriteX < 0) {
-			//RemoveBoundsOnScreen();
-			ocMainCam.translate(0 - nWidth, 0, 0);
-			fSpriteX = nWidth;
-			//FindBoundsOnScreen();
-		}*/
-		/*for (int i = 0; i < arlRectCollisionDetection.size(); i++) {
-			if (rectSprite.overlaps(arlRectCollisionDetection.get(i))) {
-				System.out.println("Collision detected!");
-				System.out.println(sDirection);
-				if (sDirection == "Up") {
-					fSpriteY -= 10f;
-				} else if (sDirection == "Down") {
-					fSpriteY += 10f;
-				} else if (sDirection == "Right") {
-					fSpriteX -= 10f;
-				} else if (sDirection == "Left") {
-					fSpriteX += 10f;
-				}
-			}
-		}
-	}
-}*/
 	}
 }
 
