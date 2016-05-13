@@ -23,7 +23,8 @@ import java.util.ArrayList;
 
 //Sources: Orthographic Camera Properties: http://www.gamefromscratch.com/post/2014/04/16/LibGDX-Tutorial-11-Tiled-Maps-Part-1-Simple-Orthogonal-Maps.aspx
           //Translating Orthographic Camera: https://github.com/libgdx/libgdx/wiki/Orthographic-camera
-          //Getting TileMa
+          //Getting TileMap Resolution: http://gamedev.stackexchange.com/questions/57325/how-to-get-width-and-height-of-tiledmap-in-the-latest-version-of-libgdx
+          //Clamping Camera: http://gamedev.stackexchange.com/questions/74926/libgdx-keep-camera-within-bounds-of-tiledmap
 
 public class GamTiledCameraScratch extends ApplicationAdapter {
 	private static final int nCols = 4;
