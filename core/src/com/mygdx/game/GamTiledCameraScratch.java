@@ -44,7 +44,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	OrthogonalTiledMapRenderer orthotmrRenderer;
 	OrthographicCamera ocMainCam;
 
-	ArrayList<Rectangle> arlRectCollisionDetection = new ArrayList<Rectangle>();
+	ArrayList<Rectangle> arlRectObjectBounds = new ArrayList<Rectangle>();
 	Rectangle rectSprite;
 	String sDirection;
 	Object objProperty;
@@ -52,6 +52,9 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	MapProperties mpBounds;
 	TiledMapTileLayer tmtlBounds;
 
+	RectangleMapObject rmoCollisionRect;
+	MapObjects moCollisionDetection;
+	Rectangle rectObjectBounds;
 	@Override
 	public void create() {
 		rectSprite = new Rectangle();
@@ -102,6 +105,15 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 				}
 			}
 		}*/
+		moCollisionDetection = tmGameMap.getLayers().get("Collision Layer").getObjects();
+		//Loop through the objects in the object layer, creating a rectangle from each object's information (height, width, etc)
+		for (int i = 0; i < moCollisionDetection.getCount(); i++) {
+			rmoCollisionRect = (RectangleMapObject) moCollisionDetection.get(i);
+			rectObjectBounds = rmoCollisionRect.getRectangle();
+			//Add this rectangle made from the Object into an arraylist
+			arlRectObjectBounds.add(rectObjectBounds);
+			System.out.println("Rectangle Added!");
+		}
 	}
 
 	@Override
@@ -158,6 +170,27 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		//batch.draw(BackGround, 0, 0);
 		sbBatch.draw(trCurrentFrame, (int) fSpriteX, (int) fSpriteY);
 		sbBatch.end();
+
+		//Check through all of the rectangles in the Arraylist of Rectangles
+		for (int i = 0; i < arlRectObjectBounds.size(); i++) {
+			if(rectSprite.overlaps(arlRectObjectBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
+				System.out.println("THE COLLISION HAST BEEN DETECTEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+				if(sDirection == "Up"){
+					fSpriteY -= 5f;
+				}
+				else if(sDirection == "Down"){
+					fSpriteY += 5f;
+				}
+				else if(sDirection == "Right") {
+					fSpriteX -= 5f;
+				}
+				else if(sDirection == "Left"){
+					fSpriteX += 5f;
+				}
+
+			}
+
+		}
 
 	}
 }
