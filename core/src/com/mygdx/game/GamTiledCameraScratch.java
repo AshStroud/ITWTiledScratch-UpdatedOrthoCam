@@ -47,10 +47,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	ArrayList<Rectangle> arlRectObjectBounds = new ArrayList<Rectangle>();
 	Rectangle rectSprite;
 	String sDirection;
-	Object objProperty;
-	TiledMapTileLayer.Cell cCurrentCell;
 	MapProperties mpBounds;
-	TiledMapTileLayer tmtlBounds;
 
 	RectangleMapObject rmoCollisionRect;
 	MapObjects moCollisionDetection;
