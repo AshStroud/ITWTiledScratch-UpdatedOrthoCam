@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" nextobjectid="198">
+<map version="1.0" orientation="orthogonal" renderorder="right-down" width="80" height="80" tilewidth="32" tileheight="32" nextobjectid="200">
  <tileset firstgid="1" name="terrain_atlas" tilewidth="32" tileheight="32" tilecount="1024" columns="32">
   <image source="Spritesheets and TileArt/terrain_atlas.png" width="1024" height="1024"/>
   <tile id="852">
@@ -313,5 +313,7 @@
   <object id="192" x="288" y="1440" width="64" height="32"/>
   <object id="194" x="480" y="1536" width="64" height="32"/>
   <object id="197" x="288" y="1568" width="64" height="32"/>
+  <object id="198" x="1056" y="1696" width="64" height="96"/>
+  <object id="199" x="2272" y="64" width="96" height="128"/>
  </objectgroup>
 </map>

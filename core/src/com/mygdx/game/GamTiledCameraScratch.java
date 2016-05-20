@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.MapProperties;
@@ -33,8 +34,10 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	int nMapWidth, nMapHeight, nTileWidth, nTileHeight, nMapTileWidth, nMapTileHeight;
 	SpriteBatch sbBatch;
 	Texture txSprite;
+	TextureAtlas taSprite;
 	TextureRegion[] artrFrames;
 	TextureRegion trCurrentFrame;
+	TextureRegion trRight[], trLeft[], trUp[], trDown[];
 	float fSpriteX = 0;
 	float fSpriteY = 0;
 	float fSpriteSpeed = 100f;
@@ -59,6 +62,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		mpBounds = new MapProperties();
 		//BackGround = new Texture(Gdx.files.internal("lostwoods2.jpg"));
 		txSprite = new Texture(Gdx.files.internal("CinderellaSpriteSheet.png"));
+		taSprite = new TextureAtlas("PackedCinderellaSpriteSheet.pack");
 		TextureRegion[][] tmp = TextureRegion.split(txSprite, txSprite.getWidth() / nCols, txSprite.getHeight() / nRows);
 		artrFrames = new TextureRegion[nCols * nRows];
 		int index = 0;
@@ -67,6 +71,12 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 				artrFrames[index++] = tmp[i][j];
 			}
 		}
+		/*for (int i = 0; i < 3; i++) { //This will be used in the future for creating animation, as per recommendation
+			trLeft[i] = taSprite.findRegion("Left" + (i + 1));
+			trRight[i] = taSprite.findRegion("Right" + (i + 1));
+			trUp[i] = taSprite.findRegion("Up" + (i+1));
+			trDown[i] = taSprite.findRegion("Down" + (i+1));
+		}*/
 		aniMain = new Animation(1f, artrFrames);
 
 		//Setting Up Orthographic Camera

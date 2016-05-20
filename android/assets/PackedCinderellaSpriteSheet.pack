@@ -1,0 +1,117 @@
+
+PackedCinderellaSpriteSheet.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+Down1
+  rotate: false
+  xy: 1, 1
+  size: 27, 46
+  orig: 27, 46
+  offset: 0, 0
+  index: -1
+Down3
+  rotate: false
+  xy: 1, 1
+  size: 27, 46
+  orig: 27, 46
+  offset: 0, 0
+  index: -1
+Up2
+  rotate: false
+  xy: 30, 1
+  size: 27, 46
+  orig: 27, 46
+  offset: 0, 0
+  index: -1
+Up4
+  rotate: false
+  xy: 30, 1
+  size: 27, 46
+  orig: 27, 46
+  offset: 0, 0
+  index: -1
+Down2
+  rotate: false
+  xy: 59, 1
+  size: 26, 46
+  orig: 26, 46
+  offset: 0, 0
+  index: -1
+Down4
+  rotate: false
+  xy: 87, 1
+  size: 26, 46
+  orig: 26, 46
+  offset: 0, 0
+  index: -1
+Up1
+  rotate: false
+  xy: 115, 2
+  size: 26, 45
+  orig: 26, 45
+  offset: 0, 0
+  index: -1
+Up3
+  rotate: false
+  xy: 143, 2
+  size: 26, 45
+  orig: 26, 45
+  offset: 0, 0
+  index: -1
+Left2
+  rotate: false
+  xy: 171, 2
+  size: 24, 45
+  orig: 24, 45
+  offset: 0, 0
+  index: -1
+Left4
+  rotate: false
+  xy: 171, 2
+  size: 24, 45
+  orig: 24, 45
+  offset: 0, 0
+  index: -1
+Left3
+  rotate: false
+  xy: 197, 3
+  size: 25, 44
+  orig: 25, 44
+  offset: 0, 0
+  index: -1
+Right2
+  rotate: false
+  xy: 224, 3
+  size: 25, 44
+  orig: 25, 44
+  offset: 0, 0
+  index: -1
+Left1
+  rotate: false
+  xy: 251, 3
+  size: 24, 44
+  orig: 24, 44
+  offset: 0, 0
+  index: -1
+Right1
+  rotate: false
+  xy: 277, 2
+  size: 24, 45
+  orig: 24, 45
+  offset: 0, 0
+  index: -1
+Right3
+  rotate: false
+  xy: 303, 2
+  size: 24, 45
+  orig: 24, 45
+  offset: 0, 0
+  index: -1
+Right4
+  rotate: false
+  xy: 329, 3
+  size: 24, 44
+  orig: 24, 44
+  offset: 0, 0
+  index: -1
