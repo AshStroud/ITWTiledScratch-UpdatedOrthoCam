@@ -183,16 +183,20 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 			if(rectSprite.overlaps(arlRectObjectBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
 				System.out.println("THE COLLISION HAST BEEN DETECTEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
 				if(sDirection == "Up"){
-					fSpriteY -= 5f;
+					//fSpriteY -= 5f;
+					fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 				}
 				else if(sDirection == "Down"){
-					fSpriteY += 5f;
+					//fSpriteY += 5f;
+					fSpriteY += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 				}
 				else if(sDirection == "Right") {
-					fSpriteX -= 5f;
+					//fSpriteX -= 5f;
+					fSpriteX -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 				}
 				else if(sDirection == "Left"){
-					fSpriteX += 5f;
+					//fSpriteX += 5f;
+					fSpriteX += Gdx.graphics.getDeltaTime() * fSpriteSpeed;
 				}
 
 			}
