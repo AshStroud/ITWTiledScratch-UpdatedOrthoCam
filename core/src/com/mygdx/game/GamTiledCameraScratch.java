@@ -37,7 +37,6 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 	TextureAtlas taSprite;
 	TextureRegion[] artrFrames;
 	TextureRegion trCurrentFrame;
-	TextureRegion trRight[], trLeft[], trUp[], trDown[];
 	float fSpriteX = 0;
 	float fSpriteY = 0;
 	float fSpriteSpeed = 100f;
@@ -71,25 +70,22 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 				artrFrames[index++] = tmp[i][j];
 			}
 		}
-		/*for (int i = 0; i < 3; i++) { //This will be used in the future for creating animation, as per recommendation
-			trLeft[i] = taSprite.findRegion("Left" + (i + 1));
-			trRight[i] = taSprite.findRegion("Right" + (i + 1));
-			trUp[i] = taSprite.findRegion("Up" + (i+1));
-			trDown[i] = taSprite.findRegion("Down" + (i+1));
-		}*/
+
 		aniMain = new Animation(1f, artrFrames);
 
-		//Setting Up Orthographic Camera
+		//Setting Up Orthographic Camera- define its viewport height and width
 		ocMainCam = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		ocMainCam.setToOrtho(false, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		ocMainCam.update();
 
-		//Setting Up TiledMap
+		//Setting Up TiledMap- load the .tmx file created in Tiled and add it to the Orthogonal Tiled Map Renderer
 		tmGameMap = new TmxMapLoader().load("CameraPanMap.tmx");
 		orthotmrRenderer = new OrthogonalTiledMapRenderer(tmGameMap);
 
+		//Get the properties of the Tiled map- since we have not defined any properties, this will find the predefined properties
 		mpBounds = tmGameMap.getProperties();
 
+		//This section of code is used to help
 		nMapWidth = mpBounds.get("width", Integer.class);
 		nMapHeight = mpBounds.get("height", Integer.class);
 		nTileWidth = mpBounds.get("tilewidth", Integer.class);
@@ -112,6 +108,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 				}
 			}
 		}*/
+		//Get all of the map objects on the collision layer of the Tiled Map
 		moCollisionDetection = tmGameMap.getLayers().get("Collision Layer").getObjects();
 		//Loop through the objects in the object layer, creating a rectangle from each object's information (height, width, etc)
 		for (int i = 0; i < moCollisionDetection.getCount(); i++) {
@@ -181,7 +178,7 @@ public class GamTiledCameraScratch extends ApplicationAdapter {
 		//Check through all of the rectangles in the Arraylist of Rectangles
 		for (int i = 0; i < arlRectObjectBounds.size(); i++) {
 			if(rectSprite.overlaps(arlRectObjectBounds.get(i))) { //Checking to see if the sprite rectangle intersects any of the rectangles in the arraylist of rectangles from the object layer
-				System.out.println("THE COLLISION HAST BEEN DETECTEDDDDDDDDDDDDDDDDDDDDDDDDDDDDDD");
+				//Using the Sprite's current direction, reposition the Sprite accordingly
 				if(sDirection == "Up"){
 					//fSpriteY -= 5f;
 					fSpriteY -= Gdx.graphics.getDeltaTime() * fSpriteSpeed;
